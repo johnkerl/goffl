@@ -2,7 +2,7 @@ package f2poly
 
 import (
 	"fmt"
-	"goffl/pkg/bitarith"
+	"github.com/johnkerl/goffl/pkg/bitarith"
 	"math/rand"
 )
 

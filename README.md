@@ -23,13 +23,13 @@ package main
 
 import (
 	"fmt"
-	"goffl/pkg/intarith"
-	"goffl/pkg/intmod"
-	"goffl/pkg/intfactor"
-	"goffl/pkg/f2poly"
-	"goffl/pkg/f2polymod"
-	"goffl/pkg/f2polyfactor"
-	"goffl/pkg/order"
+	"github.com/johnkerl/goffl/pkg/intarith"
+	"github.com/johnkerl/goffl/pkg/intmod"
+	"github.com/johnkerl/goffl/pkg/intfactor"
+	"github.com/johnkerl/goffl/pkg/f2poly"
+	"github.com/johnkerl/goffl/pkg/f2polymod"
+	"github.com/johnkerl/goffl/pkg/f2polyfactor"
+	"github.com/johnkerl/goffl/pkg/order"
 )
 
 func main() {

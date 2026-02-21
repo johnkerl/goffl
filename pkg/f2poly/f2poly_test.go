@@ -1,8 +1,8 @@
 package f2poly_test
 
 import (
-	"goffl/pkg/f2poly"
-	"goffl/pkg/f2polyfactor"
+	"github.com/johnkerl/goffl/pkg/f2poly"
+	"github.com/johnkerl/goffl/pkg/f2polyfactor"
 	"testing"
 )
 

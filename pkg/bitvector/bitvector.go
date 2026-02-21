@@ -2,7 +2,7 @@ package bitvector
 
 import (
 	"fmt"
-	"goffl/pkg/bitarith"
+	"github.com/johnkerl/goffl/pkg/bitarith"
 )
 
 var writeHex bool

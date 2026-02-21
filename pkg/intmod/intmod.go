@@ -1,7 +1,7 @@
 package intmod
 
 import (
-	"goffl/pkg/intarith"
+	"github.com/johnkerl/goffl/pkg/intarith"
 	"math/rand"
 )
 

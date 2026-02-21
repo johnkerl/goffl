@@ -2,7 +2,7 @@ package bitmatrix
 
 import (
 	"fmt"
-	"goffl/pkg/bitvector"
+	"github.com/johnkerl/goffl/pkg/bitvector"
 )
 
 // BitMatrix is a matrix of bit vectors over GF(2). Supports row echelon form and kernel basis.

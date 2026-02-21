@@ -1,8 +1,8 @@
 package intfactor
 
 import (
-	"goffl/pkg/factorization"
-	"goffl/pkg/intarith"
+	"github.com/johnkerl/goffl/pkg/factorization"
+	"github.com/johnkerl/goffl/pkg/intarith"
 )
 
 func Factor(n int64) *factorization.Factorization {

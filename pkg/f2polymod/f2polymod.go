@@ -2,7 +2,7 @@ package f2polymod
 
 import (
 	"fmt"
-	"goffl/pkg/f2poly"
+	"github.com/johnkerl/goffl/pkg/f2poly"
 )
 
 // F2PolyMod is a residue class: F2[x] mod m(x).

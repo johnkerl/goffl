@@ -2,12 +2,12 @@ package order
 
 import (
 	"fmt"
-	"goffl/pkg/f2poly"
-	"goffl/pkg/f2polyfactor"
-	"goffl/pkg/f2polymod"
-	"goffl/pkg/intarith"
-	"goffl/pkg/intfactor"
-	"goffl/pkg/intmod"
+	"github.com/johnkerl/goffl/pkg/f2poly"
+	"github.com/johnkerl/goffl/pkg/f2polyfactor"
+	"github.com/johnkerl/goffl/pkg/f2polymod"
+	"github.com/johnkerl/goffl/pkg/intarith"
+	"github.com/johnkerl/goffl/pkg/intfactor"
+	"github.com/johnkerl/goffl/pkg/intmod"
 )
 
 // ModOrderIntMod returns the multiplicative order of a in Z/mZ.

@@ -2,9 +2,9 @@ package f2polyfactor
 
 import (
 	"fmt"
-	"goffl/pkg/bitmatrix"
-	"goffl/pkg/bitvector"
-	"goffl/pkg/f2poly"
+	"github.com/johnkerl/goffl/pkg/bitmatrix"
+	"github.com/johnkerl/goffl/pkg/bitvector"
+	"github.com/johnkerl/goffl/pkg/f2poly"
 )
 
 // PolyFactorization holds factors (F2Poly) with multiplicities for polynomial factorization.
