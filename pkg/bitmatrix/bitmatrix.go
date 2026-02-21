@@ -29,7 +29,7 @@ func New(numRows, numCols int) (*BitMatrix, error) {
 func (m *BitMatrix) NumRows() int { return m.numRows }
 func (m *BitMatrix) NumCols() int { return m.numCols }
 
-func (m *BitMatrix) SetHexOutput()  { bitvector.SetHexOutput() }
+func (m *BitMatrix) SetHexOutput()    { bitvector.SetHexOutput() }
 func (m *BitMatrix) SetBinaryOutput() { bitvector.SetBinaryOutput() }
 
 func (m *BitMatrix) Row(i int) *bitvector.BitVector { return m.Rows[i] }

@@ -7,7 +7,7 @@ import (
 
 var writeHex bool
 
-func SetHexOutput()  { writeHex = true }
+func SetHexOutput()    { writeHex = true }
 func SetBinaryOutput() { writeHex = false }
 
 // BitVector is a fixed-length bit vector. Bit position 0 is the LSB (rightmost).

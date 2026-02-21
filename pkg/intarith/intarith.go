@@ -127,7 +127,9 @@ func Factorial(n int64) (int64, error) {
 }
 
 type NegativeExponentError struct{ E int64 }
+
 func (e *NegativeExponentError) Error() string { return "intexp: negative exponent disallowed" }
 
 type NegativeInputError struct{}
+
 func (e *NegativeInputError) Error() string { return "factorial: negative input disallowed" }

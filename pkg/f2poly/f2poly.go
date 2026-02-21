@@ -8,7 +8,7 @@ import (
 
 var formatHex = true
 
-func SetHexOutput()  { formatHex = true }
+func SetHexOutput()    { formatHex = true }
 func SetBinaryOutput() { formatHex = false }
 
 func bitDegree(bits uint64) int {
@@ -86,9 +86,9 @@ func (f *F2Poly) String() string {
 
 func (f *F2Poly) Equal(other *F2Poly) bool { return f.Bits == other.Bits }
 
-func (f *F2Poly) IsZero() bool  { return f.Bits == 0 }
+func (f *F2Poly) IsZero() bool    { return f.Bits == 0 }
 func (f *F2Poly) IsNonzero() bool { return f.Bits != 0 }
-func (f *F2Poly) IsOne() bool   { return f.Bits == 1 }
+func (f *F2Poly) IsOne() bool     { return f.Bits == 1 }
 
 func (f *F2Poly) Degree() int { return bitDegree(f.Bits) }
 
