@@ -38,11 +38,17 @@ func ModOrderF2PolyMod(am *f2polymod.F2PolyMod) (int64, error) {
 	phi := f2polyfactor.Totient(m)
 	finfo := intfactor.Factor(phi)
 	phiDivisors := finfo.AllDivisors()
-	rec, _ := am.Recip()
+	rec, err := am.Recip()
+	if err != nil {
+		return 0, fmt.Errorf("mod_order: %w", err)
+	}
 	one := am.Mul(rec)
 
 	for _, e := range phiDivisors {
-		pow, _ := am.Pow(int(e))
+		pow, err := am.Pow(int(e))
+		if err != nil {
+			return 0, fmt.Errorf("mod_order: %w", err)
+		}
 		if pow.Equal(one) {
 			return e, nil
 		}
@@ -117,12 +123,16 @@ func OrbitF2PolyMod(am *f2polymod.F2PolyMod, bm *f2polymod.F2PolyMod) []*f2polym
 	return orbit
 }
 
+// F2PolyPeriod returns the period of x in F2[x]/(m), or 0 if x is not a unit or on error.
 func F2PolyPeriod(m *f2poly.F2Poly) int64 {
 	x := &f2poly.F2Poly{Bits: 2}
 	if !x.Gcd(m).IsOne() {
 		return 0
 	}
-	ord, _ := ModOrderF2PolyMod(f2polymod.New(x, m))
+	ord, err := ModOrderF2PolyMod(f2polymod.New(x, m))
+	if err != nil {
+		return 0
+	}
 	return ord
 }
 
@@ -177,14 +187,17 @@ func F2PolyPrimitive(m *f2poly.F2Poly) bool {
 	mpds := finfo.MaximalProperDivisors()
 
 	for _, mpd := range mpds {
-		pow, _ := rcrx.Pow(int(mpd))
+		pow, err := rcrx.Pow(int(mpd))
+		if err != nil {
+			return false
+		}
 		if pow.IsOne() {
 			return false
 		}
 	}
-	pow, _ := rcrx.Pow(int(phi))
-	if !pow.IsOne() {
+	pow, err := rcrx.Pow(int(phi))
+	if err != nil {
 		return false
 	}
-	return true
+	return pow.IsOne()
 }
