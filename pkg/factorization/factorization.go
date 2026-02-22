@@ -1,3 +1,4 @@
+// Package factorization provides integer factorization (primes and multiplicities) and divisors.
 package factorization
 
 import (

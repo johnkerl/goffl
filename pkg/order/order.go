@@ -1,7 +1,9 @@
+// Package order provides multiplicative order and related functions for Z/nZ and F2[x]/(m).
 package order
 
 import (
 	"fmt"
+
 	"github.com/johnkerl/goffl/pkg/f2poly"
 	"github.com/johnkerl/goffl/pkg/f2polyfactor"
 	"github.com/johnkerl/goffl/pkg/f2polymod"
