@@ -11,7 +11,7 @@ import (
 
 	generatedlexers "github.com/johnkerl/goffl/cmd/eval/generated/go/pkg/lexers"
 	generatedparsers "github.com/johnkerl/goffl/cmd/eval/generated/go/pkg/parsers"
-	"github.com/johnkerl/pgpg/manual/go/pkg/asts"
+	"github.com/johnkerl/pgpg/lib/go/pkg/asts"
 
 	"github.com/johnkerl/goffl/pkg/f2poly"
 	"github.com/johnkerl/goffl/pkg/f2polymod"

@@ -1,8 +1,9 @@
 # ----------------------------------------------------------------
 # Run from repo root: make -C cmd/eval/generated [all]
-# Or from here: make GOFFL_ROOT=../.. all
+# Or from here: make all
 # Uses go run from module root so pgpg is resolvable.
-GOFFL_ROOT ?= ../..
+# From cmd/eval/generated, ../../.. is repo root (used when running make -C cmd/eval/generated).
+GOFFL_ROOT ?= ../../..
 ROOT := $(abspath $(GOFFL_ROOT))
 
 # Grammar specs are "name|TypePrefix" where TypePrefix is used to
@@ -23,22 +24,22 @@ dirs:
 # ----------------------------------------------------------------
 define LEX_GO_RULE
 go/pkg/lexers/$(1).go: jsons/$(1)-lex.json
-	cd $(ROOT) && go run github.com/johnkerl/pgpg/cmd/lexgen-code -o $(ROOT)/cmd/eval/generated/go/pkg/lexers/$(1).go -type $(2)Lexer $(ROOT)/cmd/eval/generated/jsons/$(1)-lex.json
+	cd $(ROOT) && go run github.com/johnkerl/pgpg/generators/go/cmd/lexgen-code -o $(ROOT)/cmd/eval/generated/go/pkg/lexers/$(1).go -type $(2)Lexer $(ROOT)/cmd/eval/generated/jsons/$(1)-lex.json
 endef
 
 define LEX_JSON_RULE
 jsons/$(1)-lex.json: ../bnfs/$(1).bnf
-	cd $(ROOT) && go run github.com/johnkerl/pgpg/cmd/lexgen-tables -o $(ROOT)/cmd/eval/generated/jsons/$(1)-lex.json $(ROOT)/cmd/eval/bnfs/$(1).bnf
+	cd $(ROOT) && go run github.com/johnkerl/pgpg/generators/go/cmd/lexgen-tables -o $(ROOT)/cmd/eval/generated/jsons/$(1)-lex.json $(ROOT)/cmd/eval/bnfs/$(1).bnf
 endef
 
 define PARSE_GO_RULE
 go/pkg/parsers/$(1).go: jsons/$(1)-parse.json
-	cd $(ROOT) && go run github.com/johnkerl/pgpg/cmd/parsegen-code -o $(ROOT)/cmd/eval/generated/go/pkg/parsers/$(1).go -package parsers -type $(2)Parser $(ROOT)/cmd/eval/generated/jsons/$(1)-parse.json
+	cd $(ROOT) && go run github.com/johnkerl/pgpg/generators/go/cmd/parsegen-code -o $(ROOT)/cmd/eval/generated/go/pkg/parsers/$(1).go -package parsers -type $(2)Parser $(ROOT)/cmd/eval/generated/jsons/$(1)-parse.json
 endef
 
 define PARSE_JSON_RULE
 jsons/$(1)-parse.json: ../bnfs/$(1).bnf
-	cd $(ROOT) && go run github.com/johnkerl/pgpg/cmd/parsegen-tables -o $(ROOT)/cmd/eval/generated/jsons/$(1)-parse.json $(ROOT)/cmd/eval/bnfs/$(1).bnf
+	cd $(ROOT) && go run github.com/johnkerl/pgpg/generators/go/cmd/parsegen-tables -o $(ROOT)/cmd/eval/generated/jsons/$(1)-parse.json $(ROOT)/cmd/eval/bnfs/$(1).bnf
 endef
 
 $(foreach spec,$(LEX_SPECS),$(eval $(call LEX_GO_RULE,$(firstword $(subst |, ,$(spec))),$(word 2,$(subst |, ,$(spec))))))
