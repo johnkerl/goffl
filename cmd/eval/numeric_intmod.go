@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/johnkerl/goffl/pkg/intarith"
 	"github.com/johnkerl/goffl/pkg/intmod"
 )
 
@@ -47,10 +46,7 @@ func (b *IntModNumeric) Divide(a, c *intmod.IntMod) (*intmod.IntMod, error) {
 	if c.Residue == 0 {
 		return nil, fmt.Errorf("division by zero")
 	}
-	if intarith.Gcd(c.Residue, b.Modulus) != 1 {
-		return nil, fmt.Errorf("no modular inverse for %d mod %d", c.Residue, b.Modulus)
-	}
-	return a.Div(c), nil
+	return a.Div(c)
 }
 
 func (b *IntModNumeric) Mod(a, c *intmod.IntMod) (*intmod.IntMod, error) {
@@ -58,7 +54,7 @@ func (b *IntModNumeric) Mod(a, c *intmod.IntMod) (*intmod.IntMod, error) {
 }
 
 func (b *IntModNumeric) Exponentiate(base *intmod.IntMod, exp int) (*intmod.IntMod, error) {
-	return base.Pow(int64(exp)), nil
+	return base.Pow(int64(exp))
 }
 
 func (b *IntModNumeric) ToExponent(v *intmod.IntMod) (int, error) {

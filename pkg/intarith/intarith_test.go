@@ -56,14 +56,28 @@ func TestEulerPhi(t *testing.T) {
 }
 
 func TestIntModExp(t *testing.T) {
-	if got := IntModExp(2, 0, 11); got != 1 {
-		t.Errorf("IntModExp(2,0,11) = %d, want 1", got)
+	got, err := IntModExp(2, 0, 11)
+	if err != nil || got != 1 {
+		t.Errorf("IntModExp(2,0,11) = %d, %v; want 1, nil", got, err)
 	}
-	if got := IntModExp(2, 10, 11); got != 1 {
-		t.Errorf("IntModExp(2,10,11) = %d, want 1", got)
+	got, err = IntModExp(2, 10, 11)
+	if err != nil || got != 1 {
+		t.Errorf("IntModExp(2,10,11) = %d, %v; want 1, nil", got, err)
 	}
-	if got := IntModExp(2, -1, 11); got != 6 {
-		t.Errorf("IntModExp(2,-1,11) = %d, want 6", got)
+	got, err = IntModExp(2, -1, 11)
+	if err != nil || got != 6 {
+		t.Errorf("IntModExp(2,-1,11) = %d, %v; want 6, nil", got, err)
+	}
+}
+
+func TestIntModRecip(t *testing.T) {
+	got, err := IntModRecip(2, 11)
+	if err != nil || got != 6 {
+		t.Errorf("IntModRecip(2,11) = %d, %v; want 6, nil", got, err)
+	}
+	_, err = IntModRecip(2, 4)
+	if err == nil {
+		t.Error("IntModRecip(2,4) should fail (no inverse)")
 	}
 }
 

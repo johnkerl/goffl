@@ -14,14 +14,21 @@ func TestBasic(t *testing.T) {
 	if got := a.Mul(b).Residue; got != 6 {
 		t.Errorf("(a*b).Residue = %d, want 6", got)
 	}
-	if got := a.Pow(10).Residue; got != 1 {
+	pow, err := a.Pow(10)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := pow.Residue; got != 1 {
 		t.Errorf("(a^10).Residue = %d, want 1", got)
 	}
 }
 
 func TestRecip(t *testing.T) {
 	a := New(2, 11)
-	r := a.Recip()
+	r, err := a.Recip()
+	if err != nil {
+		t.Fatal(err)
+	}
 	if got := a.Mul(r).Residue; got != 1 {
 		t.Errorf("(a*recip).Residue = %d, want 1", got)
 	}

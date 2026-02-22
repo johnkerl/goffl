@@ -1,8 +1,10 @@
 package intmod
 
 import (
-	"github.com/johnkerl/goffl/pkg/intarith"
+	"fmt"
 	"math/rand"
+
+	"github.com/johnkerl/goffl/pkg/intarith"
 )
 
 // IntMod is a residue class: integer mod m.
@@ -25,8 +27,12 @@ func New(residue, modulus int64) *IntMod {
 
 func (a *IntMod) Modulus() int64 { return a.modulus }
 
-func (a *IntMod) Recip() *IntMod {
-	return New(intarith.IntModRecip(a.Residue, a.modulus), a.modulus)
+func (a *IntMod) Recip() (*IntMod, error) {
+	r, err := intarith.IntModRecip(a.Residue, a.modulus)
+	if err != nil {
+		return nil, fmt.Errorf("intmod recip: %w", err)
+	}
+	return New(r, a.modulus), nil
 }
 
 func (a *IntMod) Add(other *IntMod) *IntMod {
@@ -70,24 +76,32 @@ func (a *IntMod) Mul(other *IntMod) *IntMod {
 	return &IntMod{Residue: r, modulus: a.modulus}
 }
 
-func (a *IntMod) Div(other *IntMod) *IntMod {
-	return a.Mul(other.Recip())
+func (a *IntMod) Div(other *IntMod) (*IntMod, error) {
+	rec, err := other.Recip()
+	if err != nil {
+		return nil, err
+	}
+	return a.Mul(rec), nil
 }
 
-func (a *IntMod) Pow(e int64) *IntMod {
+func (a *IntMod) Pow(e int64) (*IntMod, error) {
 	if a.Residue == 0 {
 		if e == 0 {
-			panic("0**0 undefined")
+			return nil, fmt.Errorf("0**0 undefined")
 		}
 		if e < 0 {
-			panic("division by zero")
+			return nil, fmt.Errorf("division by zero")
 		}
-		return New(0, a.modulus)
+		return New(0, a.modulus), nil
 	}
 	rv := New(1, a.modulus)
 	xp := New(a.Residue, a.modulus)
 	if e < 0 {
-		xp = xp.Recip()
+		rec, err := xp.Recip()
+		if err != nil {
+			return nil, err
+		}
+		xp = rec
 		e = -e
 	}
 	for e != 0 {
@@ -97,7 +111,7 @@ func (a *IntMod) Pow(e int64) *IntMod {
 		e >>= 1
 		xp = xp.Mul(xp)
 	}
-	return rv
+	return rv, nil
 }
 
 func (a *IntMod) Equal(other *IntMod) bool {

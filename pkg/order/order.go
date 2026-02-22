@@ -19,10 +19,18 @@ func ModOrderIntMod(am *intmod.IntMod) (int64, error) {
 	phi := intfactor.Totient(m)
 	finfo := intfactor.Factor(phi)
 	phiDivisors := finfo.AllDivisors()
-	one := am.Mul(am.Recip())
+	rec, err := am.Recip()
+	if err != nil {
+		return 0, fmt.Errorf("mod_order: %w", err)
+	}
+	one := am.Mul(rec)
 
 	for _, e := range phiDivisors {
-		if am.Pow(e).Equal(one) {
+		pow, err := am.Pow(e)
+		if err != nil {
+			return 0, fmt.Errorf("mod_order: %w", err)
+		}
+		if pow.Equal(one) {
 			return e, nil
 		}
 	}
