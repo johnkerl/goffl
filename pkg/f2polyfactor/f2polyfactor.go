@@ -1,7 +1,9 @@
+// Package f2polyfactor provides factorization and irreducibility for polynomials over GF(2).
 package f2polyfactor
 
 import (
 	"fmt"
+
 	"github.com/johnkerl/goffl/pkg/bitmatrix"
 	"github.com/johnkerl/goffl/pkg/bitvector"
 	"github.com/johnkerl/goffl/pkg/f2poly"

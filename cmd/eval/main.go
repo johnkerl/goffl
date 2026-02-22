@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -51,8 +52,8 @@ func main() {
 
 	args := flag.Args()
 
-	validModes := map[string]bool{"int": true, "mod": true, "intmod": true, "f2poly": true, "f2polymod": true}
-	if !validModes[mode] {
+	validModes := []string{"int", "mod", "intmod", "f2poly", "f2polymod"}
+	if !slices.Contains(validModes, mode) {
 		fmt.Fprintf(os.Stderr, "pemdas-eval: -mode must be int, mod, intmod, f2poly, or f2polymod (got %q)\n", mode)
 		os.Exit(1)
 	}

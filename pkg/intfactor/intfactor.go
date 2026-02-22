@@ -1,3 +1,4 @@
+// Package intfactor provides integer factorization and Euler totient for int64.
 package intfactor
 
 import (

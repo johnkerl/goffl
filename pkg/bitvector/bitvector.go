@@ -5,10 +5,14 @@ import (
 	"github.com/johnkerl/goffl/pkg/bitarith"
 )
 
+// writeHex controls String() output (hex vs binary). Process-wide; not safe for
+// concurrent use with different settings. Use SetHexOutput/SetBinaryOutput.
 var writeHex bool
 
 func SetHexOutput()    { writeHex = true }
 func SetBinaryOutput() { writeHex = false }
+
+const maxUint64 = 0xFFFFFFFFFFFFFFFF
 
 // BitVector is a fixed-length bit vector. Bit position 0 is the LSB (rightmost).
 type BitVector struct {
@@ -28,7 +32,7 @@ func (v *BitVector) NumBits() int { return v.numBits }
 func (v *BitVector) String() string {
 	mask := uint64(1<<v.numBits) - 1
 	if v.numBits == 64 {
-		mask = 0xFFFFFFFFFFFFFFFF
+		mask = maxUint64
 	}
 	x := v.Bits & mask
 	if writeHex {

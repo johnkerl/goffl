@@ -6,6 +6,8 @@ import (
 	"math/rand"
 )
 
+// formatHex controls String() output (hex vs binary). Process-wide; not safe for
+// concurrent use with different settings. Use SetHexOutput/SetBinaryOutput.
 var formatHex = true
 
 func SetHexOutput()    { formatHex = true }
@@ -130,11 +132,17 @@ func (f *F2Poly) QuoRem(other *F2Poly) (q, r *F2Poly, err error) {
 }
 
 func (f *F2Poly) Quo(other *F2Poly) *F2Poly {
+	if other == nil || other.Bits == 0 {
+		panic("f2poly: division by zero")
+	}
 	q, _, _ := f.QuoRem(other)
 	return q
 }
 
 func (f *F2Poly) Mod(other *F2Poly) *F2Poly {
+	if other == nil || other.Bits == 0 {
+		panic("f2poly: division by zero")
+	}
 	_, r, _ := f.QuoRem(other)
 	return r
 }
@@ -211,6 +219,7 @@ func (f *F2Poly) ExtGcd(other *F2Poly) (g, s, t *F2Poly) {
 }
 
 func (f *F2Poly) Deriv() *F2Poly {
+	// Odd-bit mask (0x55...): in GF(2), derivative drops even powers and shifts.
 	mask := uint64(0x55555555)
 	for mask < f.Bits {
 		mask = (mask << 32) | 0x55555555

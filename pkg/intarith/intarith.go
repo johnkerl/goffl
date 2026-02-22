@@ -1,6 +1,9 @@
 package intarith
 
-import "sync"
+import (
+	"fmt"
+	"sync"
+)
 
 // Integer arithmetic: gcd, extended gcd, lcm, totient, modular exponentiation.
 
@@ -28,7 +31,23 @@ func Gcd(a, b int64) int64 {
 }
 
 // ExtGcd returns (d, m, n) with d = a*m + b*n (Blankinship's algorithm).
+// If b == 0: returns (|a|, sign(a), 0). If a == 0: returns (|b|, 0, sign(b)).
 func ExtGcd(a, b int64) (d, m, n int64) {
+	if b == 0 {
+		if a == 0 {
+			return 0, 0, 0
+		}
+		if a < 0 {
+			return -a, -1, 0
+		}
+		return a, 1, 0
+	}
+	if a == 0 {
+		if b < 0 {
+			return -b, 0, -1
+		}
+		return b, 0, 1
+	}
 	mprime, n := int64(1), int64(1)
 	m, nprime := int64(0), int64(0)
 	c, d := a, b
@@ -48,7 +67,12 @@ func ExtGcd(a, b int64) (d, m, n int64) {
 	return d, m, n
 }
 
+// Lcm returns the least common multiple of a and b. Lcm(a, 0) and Lcm(0, b) are 0.
+// May overflow for large |a|, |b|.
 func Lcm(a, b int64) int64 {
+	if a == 0 || b == 0 {
+		return 0
+	}
 	return a * b / Gcd(a, b)
 }
 
@@ -87,10 +111,14 @@ func IntExp(x, e int64) (int64, error) {
 	return rv, nil
 }
 
-func IntModExp(x, e, m int64) int64 {
+func IntModExp(x, e, m int64) (int64, error) {
 	if e < 0 {
 		e = -e
-		x = IntModRecip(x, m)
+		recip, err := IntModRecip(x, m)
+		if err != nil {
+			return 0, err
+		}
+		x = recip
 	}
 	xp := x
 	rv := int64(1)
@@ -101,12 +129,12 @@ func IntModExp(x, e, m int64) int64 {
 		e >>= 1
 		xp = (xp * xp) % m
 	}
-	return rv
+	return rv, nil
 }
 
-func IntModRecip(x, m int64) int64 {
+func IntModRecip(x, m int64) (int64, error) {
 	if Gcd(x, m) != 1 {
-		panic("intmodrecip: impossible inverse")
+		return 0, fmt.Errorf("no modular inverse for %d mod %d", x, m)
 	}
 	phi := EulerPhi(m)
 	return IntModExp(x, phi-1, m)

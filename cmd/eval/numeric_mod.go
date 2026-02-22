@@ -75,28 +75,28 @@ func (b *ModNumeric) Mod(a, bVal ModInt) (ModInt, error) {
 	return b.normalize(a.V % bVal.V), nil
 }
 
-func (be *ModNumeric) Exponentiate(base ModInt, exp int) (ModInt, error) {
+func (b *ModNumeric) Exponentiate(base ModInt, exp int) (ModInt, error) {
+	baseV := base.V
 	if exp < 0 {
-		inv, err := modInverse(base.V, be.N)
+		inv, err := modInverse(base.V, b.N)
 		if err != nil {
 			return ModInt{}, err
 		}
-		base.V = inv
+		baseV = inv
 		exp = -exp
 	}
 	out := 1
-	baseV := base.V
 	for exp > 0 {
 		if exp&1 == 1 {
-			out = (out * baseV) % be.N
+			out = (out * baseV) % b.N
 		}
-		baseV = (baseV * baseV) % be.N
+		baseV = (baseV * baseV) % b.N
 		exp >>= 1
 	}
 	if out < 0 {
-		out += be.N
+		out += b.N
 	}
-	return ModInt{V: out, N: be.N}, nil
+	return ModInt{V: out, N: b.N}, nil
 }
 
 func (b *ModNumeric) ToExponent(v ModInt) (int, error) {

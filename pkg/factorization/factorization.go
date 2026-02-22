@@ -1,3 +1,4 @@
+// Package factorization provides integer factorization (primes and multiplicities) and divisors.
 package factorization
 
 import (
@@ -47,8 +48,9 @@ func (f *Factorization) InsertTrivialFactor(n *int64) {
 	if f.trivialFactor != nil {
 		*f.trivialFactor *= *n
 	} else {
-		x := *n
-		f.trivialFactor = &x
+		p := new(int64)
+		*p = *n
+		f.trivialFactor = p
 	}
 }
 
