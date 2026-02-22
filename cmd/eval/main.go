@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"strings"
 
-	generatedlexers "github.com/johnkerl/pgpg/generated/go/pkg/lexers"
-	generatedparsers "github.com/johnkerl/pgpg/generated/go/pkg/parsers"
+	generatedlexers "github.com/johnkerl/goffl/cmd/eval/generated/go/pkg/lexers"
+	generatedparsers "github.com/johnkerl/goffl/cmd/eval/generated/go/pkg/parsers"
 	"github.com/johnkerl/pgpg/manual/go/pkg/asts"
 
 	"github.com/johnkerl/goffl/pkg/f2poly"
@@ -22,7 +22,7 @@ func usage() {
 	fmt.Fprintf(os.Stderr, "Usage: %s [options] [-e | -l] [file ...]\n", os.Args[0])
 	fmt.Fprintf(os.Stderr, "  -e: arguments are expressions to parse (at least one required).\n")
 	fmt.Fprintf(os.Stderr, "  -l: read stdin line-by-line, evaluate each line, print result (REPL mode).\n")
-	fmt.Fprintf(os.Stderr, "  -mode: int (default), float, mod, intmod, f2poly, f2polymod.\n")
+	fmt.Fprintf(os.Stderr, "  -mode: int (default), mod, intmod, f2poly, f2polymod.\n")
 	fmt.Fprintf(os.Stderr, "  -mod: integer modulus for -mode=mod or -mode=intmod (required).\n")
 	fmt.Fprintf(os.Stderr, "  -mod-poly: hex modulus polynomial for -mode=f2polymod (e.g. 0x11).\n")
 	fmt.Fprintf(os.Stderr, "  With -l and stdin a TTY, -p sets the prompt (default \"> \"); use -p \"\" to disable.\n")
@@ -43,7 +43,7 @@ func main() {
 	flag.BoolVar(&exprMode, "e", false, "Arguments are expressions to parse (at least one required)")
 	flag.BoolVar(&lineMode, "l", false, "Read stdin line-by-line, evaluate each, print result (REPL)")
 	flag.StringVar(&prompt, "p", "> ", "In -l mode with TTY stdin, prompt string (default \"> \"; use \"\" to disable)")
-	flag.StringVar(&mode, "mode", "int", "Arithmetic mode: int, float, mod, intmod, f2poly, f2polymod")
+	flag.StringVar(&mode, "mode", "int", "Arithmetic mode: int, mod, intmod, f2poly, f2polymod")
 	flag.IntVar(&modN, "mod", 0, "Integer modulus for -mode=mod or -mode=intmod")
 	flag.StringVar(&modPolyHex, "mod-poly", "", "Hex modulus polynomial for -mode=f2polymod (e.g. 0x11)")
 	flag.Usage = usage
@@ -51,9 +51,9 @@ func main() {
 
 	args := flag.Args()
 
-	validModes := map[string]bool{"int": true, "float": true, "mod": true, "intmod": true, "f2poly": true, "f2polymod": true}
+	validModes := map[string]bool{"int": true, "mod": true, "intmod": true, "f2poly": true, "f2polymod": true}
 	if !validModes[mode] {
-		fmt.Fprintf(os.Stderr, "pemdas-eval: -mode must be int, float, mod, intmod, f2poly, or f2polymod (got %q)\n", mode)
+		fmt.Fprintf(os.Stderr, "pemdas-eval: -mode must be int, mod, intmod, f2poly, or f2polymod (got %q)\n", mode)
 		os.Exit(1)
 	}
 	if (mode == "mod" || mode == "intmod") && modN <= 0 {
@@ -163,13 +163,6 @@ func runParserOnce(input string, verbose bool, mode string, modN int, modPolyHex
 			return err
 		}
 		fmt.Println(b.String(result))
-	case "float":
-		var b FloatNumeric
-		result, err := evaluateAST[float64, float64](ast, b, verbose)
-		if err != nil {
-			return err
-		}
-		fmt.Println(b.String(result))
 	case "mod":
 		numeric, err := NewModNumeric(modN)
 		if err != nil {
@@ -224,9 +217,6 @@ func parseWithMode(input string, mode string) (*asts.AST, error) {
 	case "int":
 		lexer := generatedlexers.NewPEMDASIntLexer(input)
 		return generatedparsers.NewPEMDASIntParser().Parse(lexer, "")
-	case "float":
-		lexer := generatedlexers.NewPEMDASFloatLexer(input)
-		return generatedparsers.NewPEMDASFloatParser().Parse(lexer, "")
 	case "mod", "intmod":
 		lexer := generatedlexers.NewPEMDASModLexer(input)
 		return generatedparsers.NewPEMDASModParser().Parse(lexer, "")

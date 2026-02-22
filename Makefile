@@ -1,5 +1,8 @@
-build:
+build: codegen
 	go build ./...
+
+codegen:
+	make -C cmd/eval/generated
 
 test:
 	go test ./...
@@ -7,4 +10,4 @@ test:
 fmt:
 	go fmt ./...
 
-.PHONY: build test fmt
+.PHONY: build codegen test fmt
