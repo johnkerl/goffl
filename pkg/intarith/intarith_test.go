@@ -27,6 +27,19 @@ func TestExtGcd(t *testing.T) {
 	if d != 12 || m != -2 || n != 1 {
 		t.Errorf("ExtGcd(24,60) = (%d,%d,%d), want (12,-2,1)", d, m, n)
 	}
+	// b == 0 and a == 0
+	d, m, n = ExtGcd(7, 0)
+	if d != 7 || m != 1 || n != 0 {
+		t.Errorf("ExtGcd(7,0) = (%d,%d,%d), want (7,1,0)", d, m, n)
+	}
+	d, m, n = ExtGcd(0, 11)
+	if d != 11 || m != 0 || n != 1 {
+		t.Errorf("ExtGcd(0,11) = (%d,%d,%d), want (11,0,1)", d, m, n)
+	}
+	d, m, n = ExtGcd(0, 0)
+	if d != 0 || m != 0 || n != 0 {
+		t.Errorf("ExtGcd(0,0) = (%d,%d,%d), want (0,0,0)", d, m, n)
+	}
 }
 
 func TestEulerPhi(t *testing.T) {
@@ -57,5 +70,11 @@ func TestIntModExp(t *testing.T) {
 func TestLcm(t *testing.T) {
 	if got := Lcm(4, 6); got != 12 {
 		t.Errorf("Lcm(4,6) = %d, want 12", got)
+	}
+	if got := Lcm(0, 6); got != 0 {
+		t.Errorf("Lcm(0,6) = %d, want 0", got)
+	}
+	if got := Lcm(4, 0); got != 0 {
+		t.Errorf("Lcm(4,0) = %d, want 0", got)
 	}
 }

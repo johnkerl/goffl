@@ -130,11 +130,17 @@ func (f *F2Poly) QuoRem(other *F2Poly) (q, r *F2Poly, err error) {
 }
 
 func (f *F2Poly) Quo(other *F2Poly) *F2Poly {
+	if other == nil || other.Bits == 0 {
+		panic("f2poly: division by zero")
+	}
 	q, _, _ := f.QuoRem(other)
 	return q
 }
 
 func (f *F2Poly) Mod(other *F2Poly) *F2Poly {
+	if other == nil || other.Bits == 0 {
+		panic("f2poly: division by zero")
+	}
 	_, r, _ := f.QuoRem(other)
 	return r
 }
