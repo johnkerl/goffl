@@ -7,9 +7,6 @@ import (
 	"github.com/johnkerl/goffl/pkg/f2poly"
 )
 
-// maxExponentInt is the maximum exponent value (max int32) for F2Poly power/ToExponent.
-const maxExponentInt = 0x7fffffff
-
 // F2PolyNumeric implements Numeric[*f2poly.F2Poly, int] for polynomials over GF(2).
 // Literals are raw hex digits only (e.g. "1fe", "0"), no 0x/0b prefix. Matches goffl.
 // No fixed modulus; operations are in F2[x].

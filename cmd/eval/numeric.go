@@ -1,5 +1,8 @@
 package main
 
+// maxExponentInt is the maximum exponent value (max int32) for F2Poly/F2PolyMod power/ToExponent.
+const maxExponentInt = 0x7fffffff
+
 // Numeric is the arithmetic numeric interface. T is the value type, E is the
 // exponent type for Exponentiate (e.g. int for modular, same as T for int).
 // ParseExponent parses an exponent from a literal string (e.g. for ** right-hand

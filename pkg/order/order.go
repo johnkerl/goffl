@@ -168,11 +168,11 @@ func F2PolyModGenerator(m *f2poly.F2Poly) (*f2poly.F2Poly, bool) {
 	if mdeg < 1 {
 		panic("f2_poly_mod_generator: modulus degree must be positive")
 	}
+	if mdeg >= 64 {
+		return nil, false // enumeration infeasible for degree >= 64
+	}
 	phi := f2polyfactor.Totient(m)
 	maxBits := uint64(1<<mdeg) - 1
-	if mdeg >= 64 {
-		maxBits = 0xFFFFFFFFFFFFFFFF
-	}
 	for bits := uint64(1); bits <= maxBits; bits++ {
 		gRes := &f2poly.F2Poly{Bits: bits}
 		if gRes.Gcd(m).IsOne() {
