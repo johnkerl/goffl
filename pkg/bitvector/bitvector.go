@@ -5,6 +5,8 @@ import (
 	"github.com/johnkerl/goffl/pkg/bitarith"
 )
 
+// writeHex controls String() output (hex vs binary). Process-wide; not safe for
+// concurrent use with different settings. Use SetHexOutput/SetBinaryOutput.
 var writeHex bool
 
 func SetHexOutput()    { writeHex = true }

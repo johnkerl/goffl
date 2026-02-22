@@ -7,6 +7,9 @@ import (
 	"github.com/johnkerl/goffl/pkg/f2poly"
 )
 
+// maxExponentInt is the maximum exponent value (max int32) for F2Poly power/ToExponent.
+const maxExponentInt = 0x7fffffff
+
 // F2PolyNumeric implements Numeric[*f2poly.F2Poly, int] for polynomials over GF(2).
 // Literals are raw hex digits only (e.g. "1fe", "0"), no 0x/0b prefix. Matches goffl.
 // No fixed modulus; operations are in F2[x].
@@ -29,7 +32,7 @@ func (F2PolyNumeric) ParseExponent(s string) (int, error) {
 	if v < 0 {
 		return 0, fmt.Errorf("negative exponent disallowed for F2Poly")
 	}
-	if v > 0x7fffffff {
+	if v > maxExponentInt {
 		return 0, fmt.Errorf("exponent too large for F2Poly")
 	}
 	return int(v), nil
@@ -62,7 +65,7 @@ func (F2PolyNumeric) Exponentiate(base *f2poly.F2Poly, exp int) (*f2poly.F2Poly,
 }
 
 func (F2PolyNumeric) ToExponent(v *f2poly.F2Poly) (int, error) {
-	if v.Bits > 0x7fffffff {
+	if v.Bits > maxExponentInt {
 		return 0, fmt.Errorf("exponent too large for F2Poly (use small nonnegative integer)")
 	}
 	return int(v.Bits), nil
