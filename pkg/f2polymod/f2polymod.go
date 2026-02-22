@@ -101,23 +101,32 @@ func (a *F2PolyMod) Equal(other *F2PolyMod) bool {
 	return a.Residue.Equal(other.Residue) && a.modulus.Equal(other.modulus)
 }
 
-func ElementsForModulus(m *f2poly.F2Poly) []*F2PolyMod {
-	maxBits := uint64(1<<m.Degree()) - 1
-	if m.Degree() >= 64 {
-		maxBits = 0xFFFFFFFFFFFFFFFF
+// ElementsForModulus returns all elements of F2[x]/(m). Returns an error if m is nil or has degree >= 64
+// (the set would have 2^64 elements and is infeasible to enumerate).
+func ElementsForModulus(m *f2poly.F2Poly) ([]*F2PolyMod, error) {
+	if m == nil {
+		return nil, fmt.Errorf("ElementsForModulus: modulus is nil")
 	}
+	if m.Degree() >= 64 {
+		return nil, fmt.Errorf("ElementsForModulus: modulus degree %d >= 64 (infeasible)", m.Degree())
+	}
+	maxBits := uint64(1<<m.Degree()) - 1
 	out := make([]*F2PolyMod, 0, maxBits+1)
 	for a := uint64(0); a <= maxBits; a++ {
 		out = append(out, New(&f2poly.F2Poly{Bits: a}, m))
 	}
-	return out
+	return out, nil
 }
 
-func UnitsForModulus(m *f2poly.F2Poly) []*F2PolyMod {
-	maxBits := uint64(1<<m.Degree()) - 1
-	if m.Degree() >= 64 {
-		maxBits = 0xFFFFFFFFFFFFFFFF
+// UnitsForModulus returns all units of F2[x]/(m). Returns an error if m is nil or has degree >= 64.
+func UnitsForModulus(m *f2poly.F2Poly) ([]*F2PolyMod, error) {
+	if m == nil {
+		return nil, fmt.Errorf("UnitsForModulus: modulus is nil")
 	}
+	if m.Degree() >= 64 {
+		return nil, fmt.Errorf("UnitsForModulus: modulus degree %d >= 64 (infeasible)", m.Degree())
+	}
+	maxBits := uint64(1<<m.Degree()) - 1
 	var out []*F2PolyMod
 	for j := uint64(1); j <= maxBits; j++ {
 		g := m.Gcd(&f2poly.F2Poly{Bits: j})
@@ -125,5 +134,5 @@ func UnitsForModulus(m *f2poly.F2Poly) []*F2PolyMod {
 			out = append(out, New(&f2poly.F2Poly{Bits: j}, m))
 		}
 	}
-	return out
+	return out, nil
 }

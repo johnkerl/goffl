@@ -66,7 +66,10 @@ func ModMaxOrderInt(m int64) (int64, error) {
 }
 
 func ModMaxOrderF2Poly(m *f2poly.F2Poly) (int64, error) {
-	units := f2polymod.UnitsForModulus(m)
+	units, err := f2polymod.UnitsForModulus(m)
+	if err != nil {
+		return 0, err
+	}
 	var max int64
 	for _, a := range units {
 		ord, err := ModOrderF2PolyMod(a)
