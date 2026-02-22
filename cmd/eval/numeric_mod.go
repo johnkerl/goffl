@@ -76,16 +76,16 @@ func (b *ModNumeric) Mod(a, bVal ModInt) (ModInt, error) {
 }
 
 func (be *ModNumeric) Exponentiate(base ModInt, exp int) (ModInt, error) {
+	baseV := base.V
 	if exp < 0 {
 		inv, err := modInverse(base.V, be.N)
 		if err != nil {
 			return ModInt{}, err
 		}
-		base.V = inv
+		baseV = inv
 		exp = -exp
 	}
 	out := 1
-	baseV := base.V
 	for exp > 0 {
 		if exp&1 == 1 {
 			out = (out * baseV) % be.N
