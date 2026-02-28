@@ -24,22 +24,22 @@ dirs:
 # ----------------------------------------------------------------
 define LEX_GO_RULE
 go/pkg/lexers/$(1).go: jsons/$(1)-lex.json
-	cd $(ROOT) && go run github.com/johnkerl/pgpg/generators/go/cmd/lexgen-code -o $(ROOT)/cmd/eval/generated/go/pkg/lexers/$(1).go -type $(2)Lexer $(ROOT)/cmd/eval/generated/jsons/$(1)-lex.json
+	cd $(ROOT) && go run github.com/johnkerl/pgpg/go/generators/cmd/lexgen-code -o $(ROOT)/cmd/eval/generated/go/pkg/lexers/$(1).go -type $(2)Lexer $(ROOT)/cmd/eval/generated/jsons/$(1)-lex.json
 endef
 
 define LEX_JSON_RULE
 jsons/$(1)-lex.json: ../bnfs/$(1).bnf
-	cd $(ROOT) && go run github.com/johnkerl/pgpg/generators/go/cmd/lexgen-tables -o $(ROOT)/cmd/eval/generated/jsons/$(1)-lex.json $(ROOT)/cmd/eval/bnfs/$(1).bnf
+	cd $(ROOT) && go run github.com/johnkerl/pgpg/go/generators/cmd/lexgen-tables -o $(ROOT)/cmd/eval/generated/jsons/$(1)-lex.json $(ROOT)/cmd/eval/bnfs/$(1).bnf
 endef
 
 define PARSE_GO_RULE
 go/pkg/parsers/$(1).go: jsons/$(1)-parse.json
-	cd $(ROOT) && go run github.com/johnkerl/pgpg/generators/go/cmd/parsegen-code -o $(ROOT)/cmd/eval/generated/go/pkg/parsers/$(1).go -package parsers -type $(2)Parser $(ROOT)/cmd/eval/generated/jsons/$(1)-parse.json
+	cd $(ROOT) && go run github.com/johnkerl/pgpg/go/generators/cmd/parsegen-code -o $(ROOT)/cmd/eval/generated/go/pkg/parsers/$(1).go -package parsers -type $(2)Parser $(ROOT)/cmd/eval/generated/jsons/$(1)-parse.json
 endef
 
 define PARSE_JSON_RULE
 jsons/$(1)-parse.json: ../bnfs/$(1).bnf
-	cd $(ROOT) && go run github.com/johnkerl/pgpg/generators/go/cmd/parsegen-tables -o $(ROOT)/cmd/eval/generated/jsons/$(1)-parse.json $(ROOT)/cmd/eval/bnfs/$(1).bnf
+	cd $(ROOT) && go run github.com/johnkerl/pgpg/go/generators/cmd/parsegen-tables -o $(ROOT)/cmd/eval/generated/jsons/$(1)-parse.json $(ROOT)/cmd/eval/bnfs/$(1).bnf
 endef
 
 $(foreach spec,$(LEX_SPECS),$(eval $(call LEX_GO_RULE,$(firstword $(subst |, ,$(spec))),$(word 2,$(subst |, ,$(spec))))))

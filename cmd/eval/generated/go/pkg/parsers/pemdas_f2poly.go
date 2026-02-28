@@ -5,9 +5,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/johnkerl/pgpg/lib/go/pkg/asts"
-	manuallexers "github.com/johnkerl/pgpg/lib/go/pkg/lexers"
-	"github.com/johnkerl/pgpg/lib/go/pkg/tokens"
+	"github.com/johnkerl/pgpg/go/lib/pkg/asts"
+	manuallexers "github.com/johnkerl/pgpg/go/lib/pkg/lexers"
+	"github.com/johnkerl/pgpg/go/lib/pkg/tokens"
 )
 
 type PEMDASF2PolyParser struct {
